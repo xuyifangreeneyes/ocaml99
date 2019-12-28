@@ -44,3 +44,37 @@ let is_palindrome l =
     | (x::xs, y::ys) -> (x = y) && (equal xs ys) in
   let revl = rev l in
   equal l revl
+
+
+(* p7 *)
+type 'a node = 
+  | One of 'a
+  | Many of 'a node list
+
+let flatten l =
+  let rec aux acc = function
+    | [] -> acc
+    | x::xs -> let acc' = match x with
+      | One y -> y::acc
+      | Many ys -> aux acc ys in
+      aux acc' xs in
+  rev (aux [] l)
+
+
+(* p8 *)
+let compress l = 
+  let rec aux acc l = match (acc, l) with
+    | (_, []) -> acc
+    | ([], x::t) -> aux [x] t
+    | (x::_, y::t) -> if x = y then aux acc t else aux (y::acc) t in 
+  List.rev (aux [] l) 
+
+
+(* p9 *)
+let pack l = 
+  let rec aux acc l = match (acc, l) with
+    | (_, []) -> acc
+    | ([], x::t) -> aux [[x]] t
+    | ((x::_ as hd)::t1, y::t2) -> if x = y then aux ((y::hd)::t1) t2 else aux ([y]::acc) t2 in
+  List.rev (aux [] l)
+
