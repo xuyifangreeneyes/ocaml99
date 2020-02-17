@@ -86,14 +86,6 @@ let rec sort = function
 let length_sort l = 
   List.map (fun (_, x) -> x) (sort (List.map (fun x -> (List.length x, x)) l))
 
-(* let frequency_sort l = 
-  let rec count cnt n = function
-  | [] -> cnt
-  | (m, _)::t -> 
-    let cnt' = if m = n then cnt + 1 else cnt in
-    count cnt' n t in
-  List.map (fun (_, x) -> x) (sort (List.map (fun x -> (count 0 (List.length x) l, x)) l))  *)
-
 let frequency_sort l = 
   let rec count cnt n = function
   | [] -> cnt
