@@ -231,4 +231,52 @@ let layout_binary_tree_2 t =
   | Empty -> Empty in
   aux rx 1 t
 
+(* 66 *)
+(* i don't know how to solve it :( *)
+
+(* 67 *)
+let rec string_of_tree = function
+  | Empty -> ""
+  | Node (x, Empty, Empty) -> String.make 1 x
+  | Node (x, l, r) ->
+    let sx = String.make 1 x in 
+    let sl = string_of_tree l in
+    let sr = string_of_tree r in
+    sx ^ "(" ^ sl ^ "," ^ sr ^ ")"
+
+let rec buffer_add_tree buf = function
+  | Empty -> ()
+  | Node (x, Empty, Empty) -> Buffer.add_char buf x
+  | Node (x, l, r) ->
+    Buffer.add_char buf x;
+    Buffer.add_char buf '(';
+    buffer_add_tree buf l;
+    Buffer.add_char buf ',';
+    buffer_add_tree buf r;
+    Buffer.add_char buf ')'
+
+let string_of_tree t = 
+  let buf = Buffer.create 256 in
+  buffer_add_tree buf t;
+  Buffer.contents buf
+
+let tree_of_string s = 
+  let len = String.length s in
+  let rec eat_one idx =
+    if idx >= len || s.[idx] = ',' || s.[idx] = ')' then Empty, idx
+    else let x = s.[idx] in
+      if idx + 1 < len && s.[idx + 1] = '(' then
+        let lnode, idx' = eat_one (idx + 2) in
+        assert (s.[idx'] = ',');
+        let rnode, idx'' = eat_one (idx' + 1) in
+        assert (s.[idx''] = ')');
+        Node(x, lnode, rnode), idx'' + 1
+      else Node(x, Empty, Empty), idx + 1
+  in fst (eat_one 0)
+
+(* difference list in Prolog *)
+
+(* 68 *)
+
+
 
